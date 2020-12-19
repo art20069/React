@@ -1,52 +1,39 @@
-import React from 'react';
-import Checkbox from '@material-ui/core/Checkbox';
+import React from "react";
+import Header from "./component/fragments/Header";
+import Menu from "./component/fragments/Menu";
+import Login from "./component/pages/Login";
+import Register from "./component/pages/Register";
 
-export default function App() {
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
 
-  const [checked, setChecked] = React.useState(true);
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+function App() {
+  const [openDrawer, setOpenDrawer] = React.useState(true);
+// Close
+  const handleDrawerClose = () => {
+    setOpenDrawer(false);
+  };
+// Open
+  const handleDrawerOpen = () => {
+    setOpenDrawer(true);
   };
 
+  //RUN
   return (
-
-
-    <div style={{textAlign:"center"}}>
-      <br/><br/><br/><br/><br/>
-      <h1 style={{color:"green"}}>ณ.เชียงราย</h1>
-      <hr/>
-
-      <h3>Test Checkbox with React-Material-UI</h3>
-    <Checkbox
-      checked={checked}
-      onChange={handleChange}
-      inputProps={{ 'aria-label': 'primary checkbox' }}
-    />
-    <Checkbox
-      defaultChecked
-      color="primary"
-      inputProps={{ 'aria-label': 'secondary checkbox' }}
-    />
-    <Checkbox inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
-    <Checkbox disabled inputProps={{ 'aria-label': 'disabled checkbox' }} />
-    <Checkbox disabled checked inputProps={{ 'aria-label': 'disabled checked checkbox' }} />
-    <Checkbox
-      defaultChecked
-      indeterminate
-      inputProps={{ 'aria-label': 'indeterminate checkbox' }}
-    />
-    <Checkbox
-      defaultChecked
-      color="default"
-      inputProps={{ 'aria-label': 'checkbox with default color' }}
-    />
-    <Checkbox
-      defaultChecked
-      size="small"
-      inputProps={{ 'aria-label': 'checkbox with small size' }}
-    />
-    <hr/>
-  </div>
+    <Router>
+      <Header handleDrawerOpen={handleDrawerOpen}/>
+      <Menu open={openDrawer} handleDrawerClose={handleDrawerClose} />
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/Register" component={Register} />
+      </Switch>
+    </Router>
   );
 }
+
+
+export default App;
