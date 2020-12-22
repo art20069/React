@@ -6,6 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import clsx from "clsx";
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +20,20 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  appBar: {
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
 }));
 
 export default function ButtonAppBar(props) {
@@ -24,7 +41,12 @@ export default function ButtonAppBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: props.open,
+        })}
+      >
         <Toolbar>
           <IconButton
             edge="start"
@@ -35,10 +57,12 @@ export default function ButtonAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="subtitle2"  className={classes.title}>
+          <Typography variant="subtitle2" className={classes.title}>
             กูอาร์ต
           </Typography>
-          <Button variant="outlined" color="inherit">Login</Button>
+          <Button variant="outlined" color="inherit">
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
