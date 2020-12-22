@@ -1,29 +1,90 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import { TextField } from "@material-ui/core";
+import { Formik } from "formik";
 
-const useStyles = makeStyles((theme) => ({
+import {
+  CardActions,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  TextField,
+  Link,
+  Grid
+} from "@material-ui/core";
+
+const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 320,
+    maxWidth: 345
   },
   media: {
-    height: 200,
+    height: 200
   },
   submit: {
-    margin: theme.spacing(4, 0, 2,),
-  },
+    margin: theme.spacing(3, 0, 2)
+  }
 }));
-
 
 export default function Register(props) {
   const classes = useStyles();
+
+  function showForm({
+    values,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+    isSubmitting
+  }) {
+    return (
+      <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          value={values.username}
+          onChange={handleChange}
+          id="username"
+          label="Username"
+          autoComplete="email"
+          autoFocus
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          value={values.password}
+          onChange={handleChange}
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+        />
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          disabled={isSubmitting}
+          className={classes.submit}
+        >
+          Register
+        </Button>
+        <Button
+          onClick={() => props.history.goBack()}
+          fullWidth
+          size="small"
+          color="primary"
+        >
+          Cancel
+        </Button>
+      </form>
+    );
+  }
 
   return (
     <Card className={classes.root}>
@@ -34,56 +95,22 @@ export default function Register(props) {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
-        Register
+          Register
         </Typography>
 
-        <from className={classes.from}>
-          {/* Username */}
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            autoComplete="email"
-            autoFocus
-          />
-          {/* Password */}
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="password"
-            label="Password"
-            autoComplete="password"
-            autoFocus
-          />
-        </from>
-      </CardContent>
-
-      <div>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
+        <Formik
+          initialValues={{ username: "admin", password: "1234" }}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            setTimeout(() => {
+              setSubmitting(false);
+            }, 1000);
+            //  alert(JSON.stringify(values));
+          }}
         >
-          Register
-        </Button>
-
-        <Button 
-        variant="contained" 
-        onClick={()=>props.history.goBack()}
-        fullWidth 
-        size="small" 
-        color="primary">
-
-          Cancel
-        </Button>
-      </div>
+          {props => showForm(props)}
+        </Formik>
+      </CardContent>
     </Card>
   );
 }

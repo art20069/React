@@ -4,8 +4,12 @@ import Header from "./component/fragments/Header";
 import Menu from "./component/fragments/Menu";
 import Login from "./component/pages/Login";
 import Register from "./component/pages/Register";
+import Stock from  "./component/pages/Stock"
+import StockCreate from  "./component/pages/StockCreate"
+import StockEdit from  "./component/pages/StockEdit"
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Route,
@@ -45,15 +49,21 @@ function App() {
     setOpenDrawer(true);
   };
 
-  //RUN
+
+const loginReducer = useSelector(({loginReducer})=>loginReducer)
+
+
   return (
     <Router>
-      <Header handleDrawerOpen={handleDrawerOpen} open={openDrawer} />
-      <Menu open={openDrawer} handleDrawerClose={handleDrawerClose} />
+      {loginReducer.result && <Header handleDrawerOpen={handleDrawerOpen} open={openDrawer}/>} 
+      {loginReducer.result && <Menu open={openDrawer} handleDrawerClose={handleDrawerClose} />}
       <Container className={classes.content} > 
         <Switch>
           <Route path="/login" component={Login} />
           <Route path="/Register" component={Register} />
+          <Route path="/stock" component={Stock} />
+          <Route path="/StockCreate" component={StockCreate} />
+          <Route path="/StockEdit/:id" component={StockEdit} />
           <Route
             exact={true}
             path="/"
